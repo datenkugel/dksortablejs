@@ -1,0 +1,92 @@
+/* Dk_Sortable - Core CSS for functionality */
+/* Only essential classes for the sortable functionality */
+
+/* Handle styles - Core functionality only */
+.dk_sortable-handle {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: var(--dk_sortable-handle-color, #666);
+    user-select: none;
+}
+
+.dk_sortable-handle::before {
+    content: attr(data-symbol);
+    font-weight: bold;
+}
+
+.dk_sortable-handle:hover::before {
+    color: var(--dk_sortable-handle-hover-color, #333);
+}
+
+/* Active dragging state */
+.dk_sortable-handle:active,
+.dk_sortable-handle.dragging {
+    cursor: grabbing;
+}
+
+/* Ghost element styles - Essential for drag feedback */
+.dk_sortable-ghost {
+    opacity: var(--dk_sortable-ghost-opacity, 0.6);
+    border-style: dashed !important;
+    pointer-events: none;
+}
+
+/* Drop indicator - Essential for visual feedback */
+.dk_sortable-drop-indicator {
+    height: 4px;
+    border-radius: 2px;
+    opacity: 1;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    margin: 8px 0;
+    position: relative;
+    --indicator-color: var(--dk_sortable-indicator-color, #2196f3);
+    --indicator-shadow: var(--dk_sortable-indicator-shadow, rgba(33, 150, 243, 0.4));
+}
+
+.dk_sortable-drop-indicator::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: -4px;
+    width: 12px;
+    height: 12px;
+    background: var(--indicator-color);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--indicator-shadow);
+}
+
+.dk_sortable-drop-indicator::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: -4px;
+    width: 12px;
+    height: 12px;
+    background: var(--indicator-color);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--indicator-shadow);
+}
+
+/* Placeholder for visual feedback - Essential for UX */
+.dk_sortable-placeholder {
+    transition: all 0.2s ease;
+}
+
+/* Legacy placeholder (minimal styling) */
+.dk_sortable-drop-placeholder {
+    height: 0;
+    border: 2px dashed var(--dk_sortable-placeholder-border, #ccc);
+    border-radius: 6px;
+    margin: 8px 0;
+    overflow: hidden;
+    opacity: 0;
+}

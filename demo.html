@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dk_Sortable Elements - Easy Demo</title>
+    <link rel="stylesheet" href="dk_sortable.css">
+    <style>
+        /* Demo Page Specific Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        /* Demo container styles */
+        .sortable-container,
+        .sortable-container-with-handle,
+        .custom-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            min-height: 200px;
+            align-items: stretch;
+        }
+
+        /* Basic demo items */
+        .sortable-item,
+        .sortable-item-with-handle {
+            padding: 12px 16px;
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 6px;
+            user-select: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            min-width: 100px;
+        }
+
+        /* Only apply grab cursor to items without handles */
+        .sortable-item {
+            cursor: grab;
+        }
+
+        /* Items with handles should not have grab cursor - only the handle should */
+        .sortable-item-with-handle {
+            cursor: default;
+        }
+
+        .sortable-item:hover,
+        .sortable-item-with-handle:hover {
+            background: #bbdefb;
+            transform: translateY(-2px);
+        }
+
+        .sortable-item.dragging,
+        .sortable-item-with-handle.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        /* Custom styled demo items */
+        .custom-item {
+            padding: 16px 20px;
+            background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: default;
+            user-select: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .custom-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-item.dragging {
+            opacity: 0.6;
+            cursor: grabbing;
+        }
+
+        /* Demo page documentation styles */
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+        
+        .usage-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .feature-list {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .feature-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        /* CSS Variables for Dk_Sortable customization examples */
+        :root {
+            --dk_sortable-handle-color: #666;
+            --dk_sortable-handle-hover-color: #333;
+            --dk_sortable-ghost-opacity: 0.6;
+            --dk_sortable-indicator-color: #2196f3;
+            --dk_sortable-indicator-shadow: rgba(33, 150, 243, 0.4);
+            --dk_sortable-placeholder-border: #ccc;
+        }
+
+        /* Custom variables for the styled demo */
+        .custom-demo {
+            --dk_sortable-handle-color: #fff;
+            --dk_sortable-handle-hover-color: #eee;
+            --dk_sortable-indicator-color: #ff6b6b;
+            --dk_sortable-indicator-shadow: rgba(255, 107, 107, 0.4);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .sortable-container,
+            .sortable-container-with-handle,
+            .custom-container {
+                gap: 8px;
+                padding: 15px;
+            }
+            
+            .sortable-item,
+            .sortable-item-with-handle,
+            .custom-item {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Dk_Sortable Elements - Complete Demo & Usage Guide</h1>
+        
+        <!-- Usage Instructions -->
+        <div class="usage-section">
+            <h2>📚 How to Use</h2>
+            <p>This is a pure JavaScript sortable solution with no external dependencies. Here's how to get started:</p>
+            
+            <h3>1. Basic Setup</h3>
+            <div class="code-example">// Include the dk_sortable.js file in your HTML
+&lt;script src="dk_sortable.js"&gt;&lt;/script&gt;
+
+// Create a sortable instance with modern CSS selectors:
+const sortable = new Dk_Sortable('.container-class', '.item-class', options);
+
+// Examples:
+// Basic sortable (no handle)
+const mySortable = new Dk_Sortable('.my-container', '.my-items');
+
+// With handle
+const handleSortable = new Dk_Sortable('.my-container', '.my-items', {
+    useHandle: true
+});</div>
+
+            <h3>2. Constructor Parameters</h3>
+            <div class="feature-list">
+                <ul>
+                    <li><strong>containerSelector</strong> - CSS selector for the container (e.g., '.my-container', '#container', '[data-sortable]')</li>
+                    <li><strong>itemSelector</strong> - CSS selector for sortable items (e.g., '.my-items', '.item', '[draggable]')</li>
+                    <li><strong>options</strong> (optional) - object with configuration options</li>
+                </ul>
+            </div>
+
+            <h3>3. Available Options</h3>
+            <div class="code-example">const sortable = new Dk_Sortable('.container', '.items', {
+    useHandle: true,                     // Enable drag handles
+    handleSymbol: '⋮⋮',                   // Custom handle symbol
+    ghostBackgroundColor: '#ffebcd',     // Color of drag preview
+    dropIndicatorColor: '#ff6b6b'        // Color of drop line
+});
+
+// Some popular handle symbols:
+// ✥ (default) - crosshair with arrows
+// ⋮⋮ - vertical dots
+// ≡ - hamburger menu
+// ⠿ - braille pattern
+// ⊞ - squared plus
+// ⌖ - target</div>
+
+            <h3>4. CSS Customization with Variables</h3>
+            <div class="code-example">/* Customize Dk_Sortable appearance with CSS variables */
+:root {
+    --dk_sortable-handle-color: #666;              /* Handle icon color */
+    --dk_sortable-handle-hover-color: #333;        /* Handle hover color */
+    --dk_sortable-ghost-opacity: 0.6;              /* Ghost element opacity */
+    --dk_sortable-indicator-color: #2196f3;        /* Drop indicator color */
+    --dk_sortable-indicator-shadow: rgba(33, 150, 243, 0.4);  /* Drop indicator shadow */
+    --dk_sortable-placeholder-border: #ccc;        /* Placeholder border color */
+}
+
+/* Per-container customization */
+.my-custom-container {
+    --dk_sortable-handle-color: #ff6b6b;
+    --dk_sortable-indicator-color: #ff6b6b;
+}</div>
+
+            <h3>4. HTML Structure</h3>
+            <div class="code-example">&lt;div class="my-container"&gt;
+    &lt;div class="my-items"&gt;Item 1&lt;/div&gt;
+    &lt;div class="my-items"&gt;Item 2&lt;/div&gt;
+    &lt;div class="my-items"&gt;Item 3&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Include Dk_Sortable files --&gt;
+&lt;link rel="stylesheet" href="dk_sortable.css"&gt;
+&lt;script src="dk_sortable.js"&gt;&lt;/script&gt;</div>
+        </div>
+        
+        <!-- Live Examples -->
+        <h2>🚀 Live Examples</h2>
+        
+        <div class="usage-section">
+            <h3>Example 1: Basic Vertical Sorting (No Handle)</h3>
+            <p><strong>Usage:</strong> <code>new Dk_Sortable('.sortable-container', '.sortable-item')</code></p>
+            <p>Click and drag anywhere on an item to reorder vertically.</p>
+            
+            <div class="sortable-container">
+                <div class="sortable-item">📄 Document 1</div>
+                <div class="sortable-item">📄 Document 2</div>
+                <div class="sortable-item">📄 Document 3</div>
+                <div class="sortable-item">📄 Document 4</div>
+                <div class="sortable-item">📄 Document 5</div>
+            </div>
+        </div>
+
+        <div class="usage-section">
+            <h3>Example 2: Sorting with Default Handle</h3>
+            <p><strong>Usage:</strong> <code>new Dk_Sortable('.sortable-container-with-handle', '.sortable-item-with-handle', { useHandle: true })</code></p>
+            <p>Use the handle (✥) at the front of each item to drag and reorder.</p>
+            
+            <div class="sortable-container-with-handle">
+                <div class="sortable-item-with-handle">🎵 Music Track A</div>
+                <div class="sortable-item-with-handle">🎵 Music Track B</div>
+                <div class="sortable-item-with-handle">🎵 Music Track C</div>
+                <div class="sortable-item-with-handle">🎵 Music Track D</div>
+            </div>
+        </div>
+
+        <div class="usage-section">
+            <h3>Example 3: Custom Handle Symbol & Styling</h3>
+            <div class="code-example">new Dk_Sortable('.custom-container', '.custom-item', {
+    useHandle: true,
+    handleSymbol: '⋮⋮',
+    ghostBackgroundColor: 'rgba(255, 107, 107, 0.3)',
+    dropIndicatorColor: '#ff6b6b'
+});</div>
+            
+            <div class="custom-container">
+                <div class="custom-item">🎨 Design Card A</div>
+                <div class="custom-item">🎨 Design Card B</div>
+                <div class="custom-item">🎨 Design Card C</div>
+                <div class="custom-item">🎨 Design Card D</div>
+            </div>
+        </div>
+
+        <!-- Advanced Usage -->
+        <div class="usage-section">
+            <h2>🔧 Advanced Usage</h2>
+            
+            <h3>Event Handling</h3>
+            <div class="code-example">// Listen for sort changes
+container.addEventListener('dk_sortable:change', function(e) {
+    console.log('Item moved:', e.detail.element.textContent);
+    console.log('New position:', e.detail.newIndex);
+    
+    // Save new order to database, update UI, etc.
+});</div>
+
+            <h3>API Methods</h3>
+            <div class="code-example">// Get current order
+const order = sortable.getOrder(container);
+
+// Add new item programmatically
+const newItem = document.createElement('div');
+newItem.className = 'my-items';
+newItem.textContent = 'New Item';
+sortable.addItem(newItem, container);
+
+// Refresh after DOM changes
+sortable.refresh();
+
+// Clean up when done
+sortable.destroy();</div>
+        </div>
+
+        <!-- Features -->
+        <div class="usage-section">
+            <h2>✨ Features</h2>
+            <div class="feature-list">
+                <ul>
+                    <li>✅ <strong>Vertical sorting</strong> - Drag items up and down to reorder</li>
+                    <li>✅ <strong>Optional crosshair handles</strong> - Restrict dragging to handle area</li>
+                    <li>✅ <strong>Visual feedback</strong> - Clear drop indicators and ghost elements</li>
+                    <li>✅ <strong>Customizable styling</strong> - Configure colors and appearance</li>
+                    <li>✅ <strong>No dependencies</strong> - Pure vanilla JavaScript</li>
+                    <li>✅ <strong>Event system</strong> - Get notified when items are reordered</li>
+                    <li>✅ <strong>Responsive design</strong> - Works on desktop and mobile</li>
+                    <li>✅ <strong>Easy integration</strong> - Just 3 required parameters</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- File Structure -->
+        <div class="usage-section">
+            <h2>📁 Required Files</h2>
+            <div class="code-example">sort/
+├── dk_sortable.js     (Main Dk_Sortable class - required)
+├── dk_sortable.css    (Base styles - required)
+└── your-page.html    (Your HTML with sortable containers)</div>
+            
+            <p>Just include <code>dk_sortable.js</code> and <code>dk_sortable.css</code> in your project, then create sortable instances as shown above!</p>
+        </div>
+    </div>
+
+    <!-- Include the sortable functionality -->
+    <script src="dk_sortable.js"></script>
+    
+    <script>
+        // Demo implementation - shows how to use the DkSortable class
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Dk_Sortable Demo Loading...');
+            
+            // Example 1: Basic sorting without handle
+            console.log('Creating basic sortable...');
+            const basicSortable = new Dk_Sortable('.sortable-container', '.sortable-item', {
+                ghostBackgroundColor: '#e8f5e8'
+            });
+            
+            // Example 2: Sorting with handle
+            console.log('Creating handle sortable...');
+            const handleSortable = new Dk_Sortable('.sortable-container-with-handle', '.sortable-item-with-handle', {
+                useHandle: true,
+                ghostBackgroundColor: '#fff3cd',
+                dropIndicatorColor: '#ff6b6b'
+            });
+            
+            // Example 3: Custom styled elements with custom handle symbol
+            console.log('Creating custom sortable...');
+            const customSortable = new Dk_Sortable('.custom-container', '.custom-item', {
+                useHandle: true,
+                handleSymbol: '⋮⋮',
+                ghostBackgroundColor: 'rgba(255, 107, 107, 0.3)',
+                dropIndicatorColor: '#ff6b6b'
+            });
+            
+            // Add event listeners to demonstrate the change event
+            document.querySelectorAll('.sortable-container, .sortable-container-with-handle, .custom-container').forEach(container => {
+                container.addEventListener('dk_sortable:change', function(e) {
+                    console.log('📦 Item moved:', {
+                        element: e.detail.element.textContent,
+                        container: e.detail.container.className,
+                        newIndex: e.detail.newIndex
+                    });
+                    
+                    // Show a subtle notification
+                    showNotification(`Moved "${e.detail.element.textContent}" to position ${e.detail.newIndex + 1}`);
+                });
+            });
+            
+            // Example of programmatically adding items
+            setTimeout(() => {
+                const newItem = document.createElement('div');
+                newItem.className = 'sortable-item';
+                newItem.textContent = '📄 Dynamically Added Document';
+                
+                const container = document.querySelector('.sortable-container');
+                basicSortable.addItem(newItem, container);
+                
+                console.log('➕ Added new item dynamically');
+                showNotification('Added new document dynamically!');
+            }, 5000);
+            
+            // Example of getting current order
+            setTimeout(() => {
+                const basicContainer = document.querySelector('.sortable-container');
+                const order = basicSortable.getOrder(basicContainer);
+                console.log('📋 Current order in basic container:', order.map(item => item.textContent));
+            }, 7000);
+            
+            console.log('✅ DkSortable Demo Ready!');
+        });
+        
+        // Helper function to show notifications
+        function showNotification(message) {
+            // Remove any existing notification
+            const existing = document.querySelector('.demo-notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = 'demo-notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4caf50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            // Add slide-in animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideIn 0.3s ease reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 3000);
+        }
+        
+        // Show welcome message
+        setTimeout(() => {
+            showNotification('🎯 Try dragging the items above!');
+        }, 1000);
+    </script>
+</body>
+</html>
