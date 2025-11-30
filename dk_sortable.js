@@ -125,10 +125,12 @@ class Dk_Sortable {
     startDrag(item, e) {
         this.draggedElement = item;
         
-        // Store initial positions
+        // Store initial positions - get the exact bounding rect
         const rect = item.getBoundingClientRect();
         this.initialMouseY = e.clientY;
         this.initialElementY = rect.top;
+        
+        // Calculate precise drag offset - where the mouse is relative to the element
         this.dragOffset = {
             x: e.clientX - rect.left,
             y: e.clientY - rect.top
@@ -137,8 +139,8 @@ class Dk_Sortable {
         // Add dragging class
         item.classList.add('dragging');
         
-        // Create ghost element
-        this.createGhostElement(item);
+        // Create ghost element with current mouse position
+        this.createGhostElement(item, e);
         
         // Change cursor
         document.body.style.cursor = 'grabbing';
@@ -147,7 +149,7 @@ class Dk_Sortable {
         document.body.style.userSelect = 'none';
     }
     
-    createGhostElement(originalItem) {
+    createGhostElement(originalItem, mouseEvent) {
         this.ghostElement = originalItem.cloneNode(true);
         this.ghostElement.classList.add('dk_sortable-ghost');
         this.ghostElement.classList.remove('dragging');
@@ -163,13 +165,26 @@ class Dk_Sortable {
         this.ghostElement.style.zIndex = '1000';
         this.ghostElement.style.width = rect.width + 'px';
         this.ghostElement.style.height = rect.height + 'px';
-        this.ghostElement.style.left = rect.left + 'px';
-        this.ghostElement.style.top = rect.top + 'px';
         this.ghostElement.style.pointerEvents = 'none';
+        
+        // Account for page scroll when positioning the ghost element
+        // getBoundingClientRect() gives viewport-relative coordinates, but we need page-relative
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Position the ghost element at the mouse cursor position minus the drag offset
+        // Add scroll offset to convert from viewport coordinates to page coordinates
+        this.ghostElement.style.left = (mouseEvent.clientX - this.dragOffset.x + scrollLeft) + 'px';
+        this.ghostElement.style.top = (mouseEvent.clientY - this.dragOffset.y + scrollTop) + 'px';
         
         // Remove any margin/padding that might affect size
         this.ghostElement.style.margin = '0';
         this.ghostElement.style.boxSizing = 'border-box';
+        
+        // Add a subtle visual effect to distinguish from original
+        this.ghostElement.style.opacity = '0.9';
+        this.ghostElement.style.transform = 'scale(1.02)';
+        this.ghostElement.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
         
         document.body.appendChild(this.ghostElement);
     }
@@ -179,10 +194,16 @@ class Dk_Sortable {
         
         e.preventDefault();
         
-        // Update ghost element position
+        // Update ghost element position - ensure it follows the mouse cursor precisely
         if (this.ghostElement) {
-            this.ghostElement.style.left = (e.clientX - this.dragOffset.x) + 'px';
-            this.ghostElement.style.top = (e.clientY - this.dragOffset.y) + 'px';
+            // Account for page scroll when positioning during mouse move
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Position the ghost element so the mouse cursor is at the same relative position
+            // as when the drag started, accounting for page scroll
+            this.ghostElement.style.left = (e.clientX - this.dragOffset.x + scrollLeft) + 'px';
+            this.ghostElement.style.top = (e.clientY - this.dragOffset.y + scrollTop) + 'px';
         }
         
         // Find the drop position

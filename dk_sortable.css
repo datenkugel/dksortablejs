@@ -7,7 +7,7 @@
     height: 20px;
     margin-right: 8px;
     cursor: grab;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -15,6 +15,11 @@
     font-size: 14px;
     color: var(--dk_sortable-handle-color, #666);
     user-select: none;
+    vertical-align: middle;
+    /* Ensure vertical centering within parent */
+    align-self: center;
+    /* Additional centering for inline elements */
+    line-height: 1;
 }
 
 .dk_sortable-handle::before {

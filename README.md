@@ -201,6 +201,16 @@ MIT License - feel free to use in personal and commercial projects.
 
 ## Changelog
 
+### v0.9.2
+- **Fixed** Ghost element positioning when page is scrolled - now accounts for scroll offset
+- **Fixed** Ghost element appearing far from mouse cursor on drag start
+- **Improved** Drag handle vertical centering with better CSS alignment properties
+- **Enhanced** Visual feedback with subtle scale and shadow effects on ghost element
+
+### v0.9.1
+- **Fixed** Ghost element positioning relative to mouse cursor
+- **Improved** Drag offset calculations for more precise dragging behavior
+
 ### v0.9.0
 - Initial release
 - Vertical sorting support
